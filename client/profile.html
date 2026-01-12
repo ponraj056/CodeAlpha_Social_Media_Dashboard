@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Social Media</title>
+    <meta name="description" content="View user profile and posts">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .profile-container {
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+
+        .profile-header {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .profile-info {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        .profile-avatar-section {
+            flex-shrink: 0;
+        }
+
+        .profile-details {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-username {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .profile-bio {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .profile-stat {
+            text-align: center;
+        }
+
+        .profile-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .profile-stat-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .posts-section {
+            margin-top: 2rem;
+        }
+
+        .posts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .post {
+            margin-bottom: 1.5rem;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .post-author-info {
+            flex: 1;
+        }
+
+        .post-author-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .post-date {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .post-content {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .post-image {
+            width: 100%;
+            border-radius: var(--radius-lg);
+            margin-bottom: 1rem;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .post-action-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color var(--transition-fast);
+        }
+
+        .post-action-btn:hover {
+            color: var(--primary-color);
+        }
+
+        .post-action-btn.liked {
+            color: var(--secondary-color);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .profile-info {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .profile-stats {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-content">
+                <a href="/" class="navbar-brand">SocialHub</a>
+                <ul class="navbar-menu"></ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container profile-container">
+        <div id="profileHeader">
+            <div class="text-center">
+                <div class="loader" style="width: 40px; height: 40px; border-width: 4px;"></div>
+            </div>
+        </div>
+
+        <div class="posts-section">
+            <div class="posts-header">
+                <h3>Posts</h3>
+            </div>
+            <div id="postsContainer">
+                <div class="text-center">
+                    <div class="loader" style="width: 40px; height: 40px; border-width: 4px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div id="editProfileModal" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Edit Profile</h3>
+                <button class="btn btn-sm btn-secondary" id="closeModalBtn">&times;</button>
+            </div>
+            <form id="editProfileForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="editFullName" class="form-label">Full Name</label>
+                        <input type="text" id="editFullName" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editBio" class="form-label">Bio</label>
+                        <textarea id="editBio" class="form-control" maxlength="160" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editProfilePicture" class="form-label">Profile Picture</label>
+                        <input type="file" id="editProfilePicture" class="form-control" accept="image/*">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelModalBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/utils.js"></script>
+    <script src="/js/profile.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+{
+    "name": "social-media-platform",
+    "version": "1.0.0",
+    "description": "Full-stack social media platform with MongoDB",
+    "main": "server/server.js",
+    "scripts": {
+        "start": "node server/server.js",
+        "dev": "nodemon server/server.js"
+    },
+    "keywords": [
+        "social-media",
+        "mongodb",
+        "express"
+    ],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.18.2",
+        "mongoose": "^7.0.0",
+        "bcryptjs": "^2.4.3",
+        "jsonwebtoken": "^9.0.0",
+        "dotenv": "^16.0.3",
+        "cors": "^2.8.5",
+        "multer": "^1.4.5-lts.1",
+        "express-validator": "^7.0.1"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.22"
+    }
+}
